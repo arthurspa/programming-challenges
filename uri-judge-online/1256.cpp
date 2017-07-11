@@ -4,49 +4,54 @@
 
 using namespace std;
 
+typedef struct node{
+	node* next;
+	int value;
+}node;
+
 int N, M, C, num, hashed;
-int **mat;
-void solveTestCase(int iteration){
-	
-	
+node **mat;
+void solveTestCase(int iteration){	
 
 	cin >> M >> C;
-	mat = new int*[M];
+	mat = (node**)malloc(M*sizeof(node));
 	for (int i = 0; i < M; ++i)
 	{
-		mat[i] = new int[200];
-
-		for (int j = 0; j < 200; ++j)
-		{
-			mat[i][j] = 0;
-		}
+		mat[i] = nullptr;
 	}
 
 	for (int i = 0; i < C; ++i)
 	{
 		cin >> num;
 		hashed = num % M;
-		for (int i = 0; i < C; ++i)
-		{
-			if(mat[hashed][i] == 0){
-				mat[hashed][i] = num;
-				break;
+		node* newNode = (node*) malloc(sizeof(node));
+		newNode->next = nullptr;
+		newNode->value = num;
+		if(mat[hashed] == nullptr){
+			mat[hashed] = newNode;
+		} else{
+			node* it = mat[hashed];
+			while(it->next != nullptr){
+				it = it->next;
 			}
+			it->next = newNode;
 		}
 	}
 
 	for (int i = 0; i < M; ++i)
 	{
-		cout << i ;
+		node* it = mat[i];
+		printf("%d ->", i);
 
-		for (int j = 0; j < 200; ++j)
-		{
-			if(mat[i][j] == 0 || j == 199){
-				printf(" -> \\");
-				break;
-			}else{
-				printf(" -> %d", mat[i][j]);
+		if(it == nullptr){
+			printf(" \\");
+		}else{
+			while(it->next != nullptr){
+				printf(" %d ->", it->value);
+				it = it->next;
 			}
+
+			printf(" %d -> \\", it->value);
 		}
 
 		cout << endl;
@@ -54,7 +59,14 @@ void solveTestCase(int iteration){
 
 	for (int i = 0; i < M; ++i)
 	{
-		delete[] mat[i];
+		node* it = mat[i];
+
+		node* aux;
+		while(it != nullptr){
+			aux = it;
+			it = it->next;
+			delete aux;
+		}
 	}
 
 	delete[] mat;
