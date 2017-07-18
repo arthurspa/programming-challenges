@@ -1,3 +1,4 @@
+# the three patterns bellow ignores extensionless files
 *
 !/**/
 !*.*
