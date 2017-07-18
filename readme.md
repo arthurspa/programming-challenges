@@ -5,4 +5,6 @@ This repository contains my solutions for some online programming problems. Curr
 * [Uri Judge Online](https://www.urionlinejudge.com.br)
 * [Open Kattis](https://open.kattis.com)
 
+I'm using [VS Code](https://code.visualstudio.com/download) along with [ms-vscode.cpptools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) to write and debug my solutions.
+
 Note: keep in mind that usually the solutions won't be efficient nor optimal as I try to solve them in the fastest time possible.
