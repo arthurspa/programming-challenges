@@ -8,12 +8,13 @@
             "program": "${fileDirname}/${fileBasenameNoExtension}",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceRoot}",
+            "cwd": "${fileDirname}",
             "environment": [
                 {
                     "name": "IS_DEBUG",
                     "value": true
-                }],
+                }
+            ],
             "externalConsole": true,
             "MIMode": "gdb",
             "setupCommands": [
