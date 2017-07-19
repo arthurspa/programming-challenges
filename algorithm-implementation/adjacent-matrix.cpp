@@ -11,15 +11,6 @@ int mat[SIZE][SIZE];
 int visited[SIZE];
 int allVisited[SIZE];
 
-// 1 -> not visited
-// 2 -> visited
-// 3 -> all neighbors visited
-
-
-void setVisited(int x, int y){
-    mat[x][y] = 2;
-    mat[y][x] = 2;
-}
 
 bool isAvailable(int x, int y){
     return (mat[x][y] == 1) && (visited[y] == 0);
@@ -38,20 +29,25 @@ int getAvailableNeighbor(int x){
 
 void traverse(int x){
 
-    // set current as visited
-    visited[x] = 1;
+    if(visited[x] == 0){
+        cout << x << " ";
+        // set current as visited
+        visited[x] = 1;
+    }
+    
 
     // get available neighbor
     int available = getAvailableNeighbor(x);
 
-    // No neighbor available
-    if(available == -1){
-        allVisited[x] = 1;
-    // If available and not visited
-    }else if (available >= 0){
-        cout << x << " ";
-        traverse(available);  
+    while(available != -1){
+        
+        traverse(available);
+
+        available = getAvailableNeighbor(x);
     }
+
+    allVisited[x] = 1;
+    
 }
 
 void initialize(){
