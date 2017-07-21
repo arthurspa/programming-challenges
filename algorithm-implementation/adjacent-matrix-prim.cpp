@@ -12,6 +12,9 @@ using namespace std;
 int mat[SIZE][SIZE];
 int visited[SIZE];
 
+// try to solve problem 
+// https://www.urionlinejudge.com.br/judge/en/problems/view/1152
+
 class LessComparator{
 public:
     bool operator()(const int &lhs, const int &rhs){
