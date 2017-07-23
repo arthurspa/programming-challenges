@@ -95,6 +95,7 @@ void Graph::printGraph()
         cout << endl;
     }
 }
+
 void solve()
 {
     // My solution goes here
