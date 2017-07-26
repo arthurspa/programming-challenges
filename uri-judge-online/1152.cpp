@@ -8,25 +8,27 @@
 
 using namespace std;
 
-#define MAX_ROAD_SIZE 4000000000
+#define INF 0x3f3f3f3f
+
 
 class Vertex
 {
   public:
-    typedef pair<int, Vertex *> ve;
-    vector<ve> adj;
+    typedef pair<int, Vertex *> edge;
+    vector<edge> adj;
+    Vertex* parent;
     int id;
-    int minCost;
-    bool visited = false;
+    int minCost; 
+    bool visited;
 };
+typedef pair<int, Vertex *> edge;
 
 class IsEqualComparator
 {
   public:
     IsEqualComparator(Vertex *vertex) : mVertex(vertex) {}
 
-    typedef pair<int, Vertex *> ve;
-    bool operator()(const ve &mve)
+    bool operator()(const pair<int, Vertex *> &mve)
     {
         return mve.second == mVertex;
     }
@@ -35,13 +37,13 @@ class IsEqualComparator
     Vertex *mVertex;
 };
 
-class LessComparator
+class GreaterComparator
 {
   public:
 
     bool operator()(const Vertex *lhs, const Vertex *rhs)
     {
-        return lhs->minCost < rhs->minCost;
+        return lhs->minCost >= rhs->minCost;
     }
 };
 
@@ -49,11 +51,10 @@ typedef map<int, Vertex *> Vertices;
 class Graph
 {
   public:
-    typedef pair<int, Vertex *> ve;
     Vertices vertices;
 
     Vertex *addVertex(const int &u);
-    void addEdge(const int &u, const int &v, int w);
+    bool addEdge(const int &u, const int &v, int w);
     void printGraph();
 
     int prim(int m, int n, int first, int weightSum);
@@ -65,8 +66,10 @@ Vertex *Graph::addVertex(const int &u)
     if (it == this->vertices.end())
     {
         Vertex *newVertex = new Vertex();
+        newVertex->parent = nullptr;
+        newVertex->minCost = INF;
         newVertex->id = u;
-        newVertex->minCost = MAX_ROAD_SIZE;
+        newVertex->visited = false;
         this->vertices[u] = newVertex;
         return newVertex;
     }
@@ -74,10 +77,11 @@ Vertex *Graph::addVertex(const int &u)
     return it->second;
 }
 
-void Graph::addEdge(const int &u, const int &v, int w)
+bool Graph::addEdge(const int &u, const int &v, int w)
 {
     Vertex *vu, *vv;
-    vector<ve>::iterator itEdge;
+    vector<edge>::iterator itEdge;
+    bool added = false;
 
     vu = this->addVertex(u);
     vv = this->addVertex(v);
@@ -85,16 +89,20 @@ void Graph::addEdge(const int &u, const int &v, int w)
     itEdge = find_if(vu->adj.begin(), vu->adj.end(), IsEqualComparator(vv));
     if (itEdge == vu->adj.end())
     {
-        ve edge = make_pair(w, vv);
+        edge edge = make_pair(w, vv);
         vu->adj.push_back(edge);
+        added = true;
     }
 
     itEdge = find_if(vv->adj.begin(), vv->adj.end(), IsEqualComparator(vu));
     if (itEdge == vv->adj.end())
     {
-        ve edge = make_pair(w, vu);
+        edge edge = make_pair(w, vu);
         vv->adj.push_back(edge);
+        added = true;
     }
+
+    return added;
 }
 
 void Graph::printGraph()
@@ -103,39 +111,42 @@ void Graph::printGraph()
     for (itv = this->vertices.begin(); itv != this->vertices.end(); ++itv)
     {
         cout << itv->first << " ";
-        vector<ve>::iterator ite;
+        vector<edge>::iterator ite;
         for(ite = itv->second->adj.begin(); ite != itv->second->adj.end(); ++ite){
             cout << ite->second->id << "(" << ite->first <<")" << " ";
         }
         cout << endl;
     }
+
+    cout << endl;
 }
 
 int Graph::prim(int m, int n, int first, int weightSum){
-    priority_queue<Vertex*, vector<Vertex*>, LessComparator> pq;
+    priority_queue<Vertex*, vector<Vertex*>, GreaterComparator> pq;
     int minWeigthSum = 0;
     Vertices::iterator itv;
-    vector<ve>::iterator itAdj;
+    vector<edge>::iterator itAdj;
 
     // Forces it have the priority in pq
-    this->vertices[first]->minCost = 0;    
-    for (itv = this->vertices.begin(); itv != this->vertices.end(); ++itv)
-    {
-        pq.push(itv->second);
-    }
+    this->vertices[first]->minCost = 0; 
+    pq.push(this->vertices[first]);
 
     while(pq.size() != 0){
         Vertex *u = pq.top();
         pq.pop();
+        if(!u->visited){
+            u->visited = true;
+            minWeigthSum += u->minCost;
 
-        for(itAdj = u->adj.begin(); itAdj != u->adj.end(); ++itAdj){
-            if(itAdj->second->visited == false && itAdj->first < itAdj->second->minCost){
-                itAdj->second->minCost = itAdj->first;
-                itAdj->second->visited = true;
-                minWeigthSum += itAdj->second->minCost;
+            for(itAdj = u->adj.begin(); itAdj != u->adj.end(); ++itAdj){
+                if(itAdj->second->visited == false && itAdj->first < itAdj->second->minCost){
+                    itAdj->second->minCost = itAdj->first;
+                    itAdj->second->parent = u;
+                    pq.push(itAdj->second);
+                }
             }
-        }        
-
+        }
+        
     }
 
     return weightSum - minWeigthSum;
@@ -144,7 +155,7 @@ int Graph::prim(int m, int n, int first, int weightSum){
 void solve()
 {
     // My solution goes here
-    int m, n, u, v, w, wsum;
+    int m, n, u, v, w, wsum, added;
     Graph g;
 
     cin >> m >> n;
@@ -154,8 +165,9 @@ void solve()
         for (int i = 0; i < n; i++)
         {
             cin >> u >> v >> w;
-            g.addEdge(u, v, w);
-            wsum += w;
+            added = g.addEdge(u, v, w);
+            if(added)
+                wsum += w;
         }
 
         cout << g.prim(m, n, u, wsum) << endl;
