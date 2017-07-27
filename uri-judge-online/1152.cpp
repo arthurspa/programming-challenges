@@ -155,12 +155,12 @@ int Graph::prim(int m, int n, int first, int weightSum){
 void solve()
 {
     // My solution goes here
-    int m, n, u, v, w, wsum, added;
-    Graph g;
-
+    int m, n, u, v, w, wsum, added;    
+    
     cin >> m >> n;
-    while (m != 0 && n != 0)
+    while (!(m == 0 && n == 0))
     {   
+        Graph g;
         wsum = 0;
         for (int i = 0; i < n; i++)
         {
@@ -171,7 +171,7 @@ void solve()
         }
 
         cout << g.prim(m, n, u, wsum) << endl;
-        //g.printGraph();
+        
 
         cin >> m >> n;
     }
