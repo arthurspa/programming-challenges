@@ -29,5 +29,7 @@
         "utility": "cpp",
         "queue": "cpp",
         "algorithm": "cpp"
-    }
+    },
+    "python.pythonPath": "/usr/bin/python3.6",
+    "python.linting.enabled": false
 }
