@@ -6,6 +6,7 @@
 #include <map>
 #include <cmath>
 #include <string>
+#include <ctime>
 
 using namespace std;
 
@@ -27,7 +28,7 @@ const int inf = 1e9 + 5;
 
 void solve()
 {
-    // My solution goes here
+    // My solution goes here    
 }
 
 int main()
@@ -42,12 +43,16 @@ int main()
         freopen(inputFileName.c_str(), "r", stdin);
     }
 
+    int start = clock();
     solve();
-
+    int end = clock();
+    
     // Workaround for issue
     // https://github.com/Microsoft/vscode-cpptools/issues/466
-    if (getenv("IS_DEBUG"))
-        cout << endl;
+    if (getenv("IS_DEBUG")){
+        cout << endl << "[Finished in " << end - start << " ms]" << endl;
+    }
+        
 
     return 0;
 }
