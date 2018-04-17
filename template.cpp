@@ -28,7 +28,8 @@ const int inf = 1e9 + 5;
 
 void solve()
 {
-    // My solution goes here    
+    // My solution goes here
+    
 }
 
 int main()
