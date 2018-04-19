@@ -31,24 +31,20 @@ void solve()
 {
     // My solution goes here
     int n, d;
-    deque<int> mDeque;
 
     cin >> n >> d;
 
-    int val;
-    REP(i, n){
-        cin >> val;
-        mDeque.pb(val);
-    }
-
-    REP(i, d){
-       val = mDeque.front();
-       mDeque.pop_front();
-       mDeque.push_back(val);
-    }
+    vi v(n);
 
     REP(i, n){
-        cout << mDeque[i] << " ";
+       cin >> v[i];
+    }
+
+    vi rotated(v.begin() + d, v.end());
+    rotated.insert(rotated.end(), v.begin(), v.begin() + d);
+
+    REP(i, n){
+        cout << rotated[i] << " ";
     }
     
 }
