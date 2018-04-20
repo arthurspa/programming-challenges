@@ -29,7 +29,15 @@
         "utility": "cpp",
         "queue": "cpp",
         "algorithm": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "bitset": "cpp",
+        "map": "cpp",
+        "cstring": "cpp",
+        "ctime": "cpp",
+        "fstream": "cpp",
+        "deque": "cpp",
+        "set": "cpp",
+        "list": "cpp"
     },
     "python.pythonPath": "/usr/bin/python3.6",
     "python.linting.enabled": false
