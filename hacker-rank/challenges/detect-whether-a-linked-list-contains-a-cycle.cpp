@@ -11,11 +11,7 @@ A Node is defined as:
 bool has_cycle(Node* head) {
     // Complete this function
     // Do not write the main method
-    
-    if(head == nullptr){
-        return false;
-    }
-    
+       
     Node *slow = head;
     Node *fast = head;
     while(fast != nullptr && fast->next != nullptr){
