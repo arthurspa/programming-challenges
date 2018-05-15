@@ -38,7 +38,8 @@
         "deque": "cpp",
         "set": "cpp",
         "list": "cpp",
-        "future": "cpp"
+        "future": "cpp",
+        "string": "cpp"
     },
     "python.pythonPath": "/usr/bin/python3.6",
     "python.linting.enabled": false
